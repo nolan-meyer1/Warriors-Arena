@@ -14,6 +14,9 @@ Logo Image: https://www.freepik.com/free-vector/spartan-helmet-logo-design_41600
 Kapow Image: https://pixabay.com/illustrations/kapow-comic-comic-book-fight-1601675/
 Hit Sound effect Created by: https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236
 Selection Sound Effect : Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=37979">Pixabay</a>
+Orbs: https://opengameart.org/content/magic-orbs-0
+Talos Shoot Sound: https://opengameart.org/content/fire-evil-spell
+Talos Hit Sound: Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=7017">Pixabay</a>
 Player 1 and 2 Wins: Image created by me
 Character Headshots: Image created by me
 Minotaur Authors: Authors: bluecarrot16, Benjamin K. Smith (BenCreating), Evert, Eliza Wyatt (ElizaWy), TheraHedwig, MuffinElZangano, Durrani, Johannes Sj?lund (wulax), Stephen Challener (Redshrike), Nila122, Daniel Eddeland (daneeklu), David Conway Jr. (JaidynReiman), Johannes Sjölund (wulax), Matthew Krohn (makrohn), Joe White, Pierre Vigier and DCSS artists (see https://github.com/crawl/tiles/blob/master/ARTISTS.md)
