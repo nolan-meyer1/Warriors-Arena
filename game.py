@@ -319,6 +319,8 @@ class Game(simpleGE.Scene):
         self.runTimes = 0
         self.P1hitTimes = 0
         self.P2hitTimes = 0
+        self.player1.imageMaster = self.player1.rightImages["right1"]
+        self.player2.imageMaster = self.player2.leftImages["left1"]
     
     #Countdown sequence
     def countdown(self):

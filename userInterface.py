@@ -151,7 +151,7 @@ class HotSpot(simpleGE.BasicSprite):
                 #Selection for the knight character
                 if (self.scene.selectionTurn == 1) and self.character == "knight":
                     self.scene.selectSound.play()
-                    self.scene.knightHeadshot.imageMaster = pygame.image.load("/Users/nolanmeyer/Final Project/Knight/knight_headshotSelected.png")
+                    self.scene.knightHeadshot.imageMaster = pygame.image.load("Knight/knight_headshotSelected.png")
                     self.scene.knightHeadshot.setSize(75,75)
                     self.scene.selectionTurn += 1 
                     self.scene.player1 = "knight"
@@ -162,7 +162,7 @@ class HotSpot(simpleGE.BasicSprite):
                     
                 elif (self.scene.selectionTurn == 2) and self.character == "knight":
                     self.scene.selectSound.play()
-                    self.scene.knightHeadshot.imageMaster = pygame.image.load("/Users/nolanmeyer/Final Project/Knight/knight_headshotSelected.png")
+                    self.scene.knightHeadshot.imageMaster = pygame.image.load("Knight/knight_headshotSelected.png")
                     self.scene.knightHeadshot.setSize(75,75)
                     self.scene.selectionTurn += 1 
                     self.scene.player2 = "knight"
@@ -171,7 +171,7 @@ class HotSpot(simpleGE.BasicSprite):
                 #Minotaur selection
                 if (self.scene.selectionTurn == 1) and self.character == "minotaur":
                     self.scene.selectSound.play()
-                    self.scene.minotaurHeadshot.imageMaster = pygame.image.load("/Users/nolanmeyer/Final Project/Minotaur/minotaur_headshotSelected.png")
+                    self.scene.minotaurHeadshot.imageMaster = pygame.image.load("Minotaur/minotaur_headshotSelected.png")
                     self.scene.minotaurHeadshot.setSize(75,75)
                     self.scene.selectionTurn += 1 
                     self.scene.player1 = "minotaur"
@@ -182,7 +182,7 @@ class HotSpot(simpleGE.BasicSprite):
                     
                 elif (self.scene.selectionTurn == 2) and self.character == "minotaur":
                     self.scene.selectSound.play()
-                    self.scene.minotaurHeadshot.imageMaster = pygame.image.load("/Users/nolanmeyer/Final Project/Minotaur/minotaur_headshotSelected.png")
+                    self.scene.minotaurHeadshot.imageMaster = pygame.image.load("Minotaur/minotaur_headshotSelected.png")
                     self.scene.minotaurHeadshot.setSize(75,75)
                     self.scene.selectionTurn += 1 
                     self.scene.player2 = "minotaur"
