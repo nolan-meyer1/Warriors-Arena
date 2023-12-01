@@ -13,7 +13,7 @@ Novemeber 28, 2023
 class UserInterface(simpleGE.Scene):
 
     def __init__(self):
-
+        
         super().__init__()
 
         #Setup the screen
@@ -60,6 +60,16 @@ class UserInterface(simpleGE.Scene):
 
         self.minotaurHotSpot = HotSpot(self,590,400,"minotaur")
 
+        #Talos Headshot
+        self.talosHeadshot = simpleGE.SuperSprite(self)
+        self.talosHeadshot.imageMaster = pygame.image.load("Talos/talos_headshot.png")
+        self.talosHeadshot.setSize(75,75)
+        self.talosHeadshot.setPosition((320,400))
+        self.talosHeadshot.hide()
+
+        self.talosHotSpot = HotSpot(self,320,400,"talos")
+        self.talosHotSpot.hide()
+
         #P1 control label
         self.P1control = simpleGE.MultiLabel()
         self.P1control.textLines = ["Player 1 Controls: Hit- W KEY Block- Q KEY Left Walk- A KEY", 
@@ -94,7 +104,8 @@ class UserInterface(simpleGE.Scene):
         self.player2 = ""
 
         self.sprites = [self.fightButton,self.knightHeadshot,self.knightHotSpot,self.minotaurHeadshot,
-                        self.minotaurHotSpot,self.logo,self.startButton,self.P1control,self.P2control]
+                        self.minotaurHotSpot,self.logo,self.startButton,self.P1control,self.P2control,
+                        self.talosHeadshot,self.talosHotSpot]
 
 
     #Checks that both characters have selected a character and ready to fight
@@ -107,6 +118,8 @@ class UserInterface(simpleGE.Scene):
             self.fightButton.show((320,70))
             self.knightHeadshot.show()
             self.minotaurHeadshot.show()
+            self.talosHeadshot.show()
+            self.talosHotSpot.show()
             self.P1control.show((320,150))
             self.P2control.show((320,250))
 
@@ -119,7 +132,7 @@ class UserInterface(simpleGE.Scene):
             if self.selectionTurn == 3:
                 pygame.mixer.music.stop()
                 self.stop()
-                game.main(self.player1,self.player2)
+                
 
 
 #Class that creates hotspots to be clicked on
@@ -187,6 +200,26 @@ class HotSpot(simpleGE.BasicSprite):
                     self.scene.selectionTurn += 1 
                     self.scene.player2 = "minotaur"
                     self.hide()
+                
+                #Talos Selection
+                if (self.scene.selectionTurn == 1) and self.character == "talos":
+                    self.scene.selectSound.play()
+                    self.scene.talosHeadshot.imageMaster = pygame.image.load("Talos/talos_headshotSelected.png")
+                    self.scene.talosHeadshot.setSize(75,75)
+                    self.scene.selectionTurn += 1 
+                    self.scene.player1 = "talos"
+                    self.scene.player2Sound.play()
+                    time.sleep(1)
+                    self.scene.chooseCharacter.play()
+                    self.hide()
+                    
+                elif (self.scene.selectionTurn == 2) and self.character == "talos":
+                    self.scene.selectSound.play()
+                    self.scene.talosHeadshot.imageMaster = pygame.image.load("Talos/talos_headshotSelected.png")
+                    self.scene.talosHeadshot.setSize(75,75)
+                    self.scene.selectionTurn += 1 
+                    self.scene.player2 = "talos"
+                    self.hide()
 
 
         #check for mouse release
@@ -202,6 +235,12 @@ def main():
    
     UI = UserInterface()
     UI.start()
+
+    player1 = UI.player1
+    player2 = UI.player2
+
+    gameplay = game.Game(player1,player2)
+    gameplay.start()
 
 
 #Calls the main function

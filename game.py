@@ -1,4 +1,4 @@
-import simpleGE,random,pygame,time
+import simpleGE,random,pygame,time,userInterface
 """
 An arcade style fighting game.
 
@@ -14,7 +14,7 @@ Logo Image: https://www.freepik.com/free-vector/spartan-helmet-logo-design_41600
 Kapow Image: https://pixabay.com/illustrations/kapow-comic-comic-book-fight-1601675/
 Hit Sound effect Created by: https://pixabay.com/users/universfield-28281460/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=140236
 Selection Sound Effect : Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=37979">Pixabay</a>
-Orbs: https://opengameart.org/content/magic-orbs-0
+FireBall: https://www.freeiconspng.com/img/46732
 Talos Shoot Sound: https://opengameart.org/content/fire-evil-spell
 Talos Hit Sound: Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=7017">Pixabay</a>
 Player 1 and 2 Wins: Image created by me
@@ -39,6 +39,10 @@ class Game(simpleGE.Scene):
         self.background = self.background.convert_alpha()
         self.background = pygame.transform.scale(self.background, ((self.screen.get_size())))
 
+        #fireball variable. Changes if talos character is created
+        self.fireBullets = ""
+        self.fireBulletsHB = ""
+
         #Player1 Character Selection
         if player1 == "knight":
             
@@ -53,6 +57,22 @@ class Game(simpleGE.Scene):
 
             self.player1HB = [Hitbox(self,self.player1,"head"),Hitbox(self,self.player1,"katana")]
             self.p1HitboxGroup = self.makeSpriteGroup(self.player1HB)
+        
+        elif player1 == "talos":
+
+            self.player1 = Talos(self,1)
+
+            self.player1HB = [Hitbox(self,self.player1,"head"),Hitbox(self,self.player1,"katana")]
+            self.p1HitboxGroup = self.makeSpriteGroup(self.player1HB)
+
+            self.fireBullets = []
+            self.fireBulletsHB = []
+            
+            for number in range(100):
+                self.fireBullets.append(FireBallBullet(self,1,number))
+                self.fireBulletsHB.append(Hitbox(self,self.player1,"bullet",number))
+                self.fireBullets[number].hide()
+
 
         #Player2 Character selection
         if player2 == "knight":
@@ -68,7 +88,21 @@ class Game(simpleGE.Scene):
 
             self.player2HB = [Hitbox(self,self.player2,"head"),Hitbox(self,self.player2,"katana")]
             self.p2HitboxGroup = self.makeSpriteGroup(self.player2HB)
+        
+        elif player2 == "talos":
 
+            self.player2 = Talos(self,2)
+
+            self.player2HB = [Hitbox(self,self.player2,"head"),Hitbox(self,self.player2,"katana")]
+            self.p2HitboxGroup = self.makeSpriteGroup(self.player2HB)
+
+            self.fireBullets = []
+            self.fireBulletsHB = []
+            
+            for number in range(100):
+                self.fireBullets.append(FireBallBullet(self,2,number))
+                self.fireBulletsHB.append(Hitbox(self,self.player2,"bullet",number))
+                self.fireBullets[number].hide()
 
         #Player 1 Health bar
         self.player1HealthBar = HealthBar(self,self.player1,0,0,(7, 245, 19))
@@ -154,26 +188,26 @@ class Game(simpleGE.Scene):
         
         self.three_image = simpleGE.SuperSprite(self)
         self.three_image.imageMaster = pygame.image.load("UI/3.png")
-        self.three_image.setSize(100,100)
-        self.three_image.setPosition((320,30))
+        self.three_image.setSize(300,300)
+        self.three_image.setPosition((320,240))
         self.three_image.hide()
 
         self.two_image = simpleGE.SuperSprite(self)
         self.two_image.imageMaster = pygame.image.load("UI/2.png")
-        self.two_image.setSize(100,100)
-        self.two_image.setPosition((320,30))
+        self.two_image.setSize(300,300)
+        self.two_image.setPosition((320,240))
         self.two_image.hide()
 
         self.one_image = simpleGE.SuperSprite(self)
         self.one_image.imageMaster = pygame.image.load("UI/1.png")
-        self.one_image.setSize(100,100)
-        self.one_image.setPosition((320,30))
+        self.one_image.setSize(300,300)
+        self.one_image.setPosition((320,240))
         self.one_image.hide()
 
         self.begin_image = simpleGE.SuperSprite(self)
         self.begin_image.imageMaster = pygame.image.load("UI/begin.png")
-        self.begin_image.setSize(100,100)
-        self.begin_image.setPosition((320,30))
+        self.begin_image.setSize(300,300)
+        self.begin_image.setPosition((320,240))
         self.begin_image.hide()
 
         #Background music for fight sequence
@@ -189,7 +223,7 @@ class Game(simpleGE.Scene):
                         self.player2HealthBar,self.player2Text,self.player1,self.p1HitboxGroup,
                         self.player2,self.p2HitboxGroup,self.player1Wins,self.playAgainSCButton,
                         self.quitButton,self.player2Wins,self.kapow,self.three_image,self.two_image,
-                        self.one_image,self.begin_image]
+                        self.one_image,self.begin_image,self.fireBullets,self.fireBulletsHB]
         
 
     #Update method controls the game
@@ -197,7 +231,6 @@ class Game(simpleGE.Scene):
 
         self.checkCollision()
         self.countdown()
-
         if self.playAgainSCButton.clicked:
 
             self.reset()
@@ -237,7 +270,7 @@ class Game(simpleGE.Scene):
                             self.player2.kickBack()
                     
                     else:
-                        self.player1.blockSound.play()
+                        self.player2.blockSound.play()
                 
         if self.player2HB[1].collidesWith(self.player1HB[0]):
 
@@ -265,7 +298,7 @@ class Game(simpleGE.Scene):
                                 self.player1.kickBack()
                         
                     else:
-                        self.player2.blockSound.play()
+                        self.player1.blockSound.play()
                 
                 
         if self.player1.health <= 0:
@@ -279,6 +312,7 @@ class Game(simpleGE.Scene):
                 self.player2Wins.y = 200
                 self.playAgainSCButton.show((300,375))
                 self.quitButton.show((300,420))
+                pygame.mixer.music.stop()
                 time.sleep(1)
                 self.player2Sound.play()
                 time.sleep(1)
@@ -286,7 +320,6 @@ class Game(simpleGE.Scene):
 
 
         if self.player2.health <= 0:
-
             self.playTimes += 1
             self.player1.canMove = False
             self.player2.canMove = False
@@ -297,6 +330,7 @@ class Game(simpleGE.Scene):
                 self.player1Wins.y = 200
                 self.playAgainSCButton.show((300,375))
                 self.quitButton.show((300,420))
+                pygame.mixer.music.stop()
                 time.sleep(1)
                 self.player1Sound.play()
                 time.sleep(1)
@@ -324,6 +358,7 @@ class Game(simpleGE.Scene):
         self.P2hitTimes = 0
         self.player1.imageMaster = self.player1.rightImages["right1"]
         self.player2.imageMaster = self.player2.leftImages["left1"]
+        pygame.mixer.music.play()
     
     #Countdown sequence
     def countdown(self):
@@ -419,44 +454,52 @@ class HealthBar(simpleGE.SuperSprite):
 #Creates hitboxes that will be attatched to the character's and move with the characters
 class Hitbox(simpleGE.SuperSprite):
 
-    def __init__(self,scene,character,type):
+    def __init__(self,scene,character,type,num=0):
         super().__init__(scene)
         self.character = character
         self.type = type
+        self.num = num
 
         if type == "head":
     
             self.imageMaster = pygame.Surface((50,50),pygame.SRCALPHA)
-            self.imageMaster.fill("red")
+            self.imageMaster.fill((0,0,0,0))
             self.setPosition((character.x,(character.y)-35))
                 
         if type == "mace":
             if character.playerID == 1:
 
                 self.imageMaster = pygame.Surface((30,50),pygame.SRCALPHA)
-                self.imageMaster.fill("red")
+                self.imageMaster.fill((0,0,0,0))
                 self.setPosition(((character.x)+40, (character.y)+40))
                 self.rotateBy(70)
             
             if character.playerID == 2:
 
                 self.imageMaster = pygame.Surface((30,50),pygame.SRCALPHA)
-                self.imageMaster.fill("red")
+                self.imageMaster.fill((0,0,0,0))
                 self.setPosition(((character.x)-40, (character.y)+40))
                 self.rotateBy(70)
             
         if type == "katana":
             if character.playerID == 1:
                 self.imageMaster = pygame.Surface((30,80),pygame.SRCALPHA)
-                self.imageMaster.fill("red")
+                self.imageMaster.fill((0,0,0,0))
                 self.setPosition(((character.x)+40, (character.y)+40))
                 self.rotateBy(70)
             
             if character.playerID == 2:
                 self.imageMaster = pygame.Surface((30,80),pygame.SRCALPHA)
-                self.imageMaster.fill("red")
+                self.imageMaster.fill((0,0,0,0))
                 self.setPosition(((character.x)-40, (character.y)+40))
                 self.rotateBy(70)
+
+        if type == "bullet":
+            self.imageMaster = pygame.Surface((50,50),pygame.SRCALPHA)
+            self.imageMaster.fill((0,0,0,0))
+            self.setPosition((character.x,(character.y)-35))
+            self.setBoundAction(self.HIDE)
+
 
     
     def checkEvents(self):
@@ -493,6 +536,11 @@ class Hitbox(simpleGE.SuperSprite):
 
                 self.y -= 10
                 self.hitTimes = 1
+        
+        if self.type == "bullet":
+            self.x = self.scene.fireBullets[self.num].x
+            self.y = self.scene.fireBullets[self.num].y
+
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 #Knight character class
@@ -922,6 +970,242 @@ class Minotaur(Knight):
             self.x = 590
             self.y = 400
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
+#Talos Class
+class Talos(Knight):
+
+    def __init__(self,scene,playerID):
+        super().__init__(scene,Knight)
+        self.playerID = playerID
+        self.canMove = False
+        self.imageNum = 2
+        self.lastKey = ""
+        self.index = 0
+        self.sound = simpleGE.Sound("Talos/shootSound.wav")
+        self.blockSound = simpleGE.Sound("Talos/blockSound.wav")
+        self.hitSound = simpleGE.Sound("Talos/fire.wav")
+        self.hitMotion = False
+        self.jumpMotion = False
+        self.block = False
+        self.kickBackMotion = False
+        self.maxDamage = 5
+        self.armor = 3
+        self.health = 100
+        self.ratio = self.health / 100
+        self.fireBulletNum = 0
+
+        self.rightImages = {
+            "right1": pygame.image.load("Talos/talos_rightWalk1.png"),
+            "right2": pygame.image.load("Talos/talos_rightWalk2.png"),
+            "right3": pygame.image.load("Talos/talos_rightWalk3.png"),
+            "right4":pygame.image.load("Talos/talos_rightWalk4.png"),
+            "right5":pygame.image.load("Talos/talos_rightWalk5.png"),
+            "right6": pygame.image.load("Talos/talos_rightWalk6.png"),
+            "right7":pygame.image.load("Talos/talos_rightWalk7.png"),
+            "right8": pygame.image.load("Talos/talos_rightWalk8.png"),
+            "right9": pygame.image.load("Talos/talos_rightWalk9.png"),
+            "rightShoot1": pygame.image.load("Talos/talos_rightShoot1.png"),
+            "rightShoot2": pygame.image.load("Talos/talos_rightShoot2.png"),
+            "rightShoot3": pygame.image.load("Talos/talos_rightShoot3.png"),
+            "rightShoot4": pygame.image.load("Talos/talos_rightShoot4.png"),
+            "rightShoot5": pygame.image.load("Talos/talos_rightShoot5.png"),
+            "rightShoot6": pygame.image.load("Talos/talos_rightShoot6.png"),
+            "rightShoot7": pygame.image.load("Talos/talos_rightShoot7.png"),
+            "rightShoot8": pygame.image.load("Talos/talos_rightShoot8.png"),
+            "rightShoot9": pygame.image.load("Talos/talos_rightShoot9.png"),
+            "rightBlock": pygame.image.load("Talos/talos_rightBlock.png"),
+        }
+
+        self.leftImages = {
+            "left1": pygame.image.load("Talos/talos_leftWalk1.png"),
+            "left2": pygame.image.load("Talos/talos_leftWalk2.png"),
+            "left3": pygame.image.load("Talos/talos_leftWalk3.png"),
+            "left4": pygame.image.load("Talos/talos_leftWalk4.png"),
+            "left5": pygame.image.load("Talos/talos_leftWalk5.png"),
+            "left6": pygame.image.load("Talos/talos_leftWalk6.png"),
+            "left7": pygame.image.load("Talos/talos_leftWalk7.png"),
+            "left8": pygame.image.load("Talos/talos_leftWalk8.png"),
+            "left9": pygame.image.load("Talos/talos_leftWalk9.png"),
+            "leftShoot1": pygame.image.load("Talos/talos_leftShoot1.png"),
+            "leftShoot2": pygame.image.load("Talos/talos_leftShoot2.png"),
+            "leftShoot3":pygame.image.load("Talos/talos_leftShoot3.png"),
+            "leftShoot4": pygame.image.load("Talos/talos_leftShoot4.png"),
+            "leftShoot5":pygame.image.load("Talos/talos_leftShoot5.png"),
+            "leftShoot6":pygame.image.load("Talos/talos_leftShoot6.png"),
+            "leftShoot7":pygame.image.load("Talos/talos_leftShoot7.png"),
+            "leftShoot8":pygame.image.load("Talos/talos_leftShoot8.png"),
+            "leftShoot9":pygame.image.load("Talos/talos_leftShoot9.png"),
+            "leftBlock": pygame.image.load("Talos/talos_leftBlock.png")
+        }
+
+        for name,image in self.rightImages.items():
+
+            self.rightImages[name] = pygame.transform.scale(image,(175,175))
+        
+        for name,image in self.leftImages.items():
+
+            self.leftImages[name] = pygame.transform.scale(image,(175,175))
+
+
+        if self.playerID == 1:
+            self.imageMaster = self.rightImages["right1"]
+            self.lastKey = "d"
+            self.x = 50
+            self.y = 400
+        
+        elif self.playerID == 2:
+            self.imageMaster = self.leftImages["left1"]
+            self.lastKey = "j"
+            self.x = 590
+            self.y = 400
+    
+    #Hit method
+    def hit(self):
+
+        self.canMove = False
+        self.index += 1
+            
+        if self.lastKey == "d":
+            self.imageMaster = self.rightImages[f"rightShoot{self.index}"]
+            time.sleep(0.01)
+            self.scene.fireBullets[self.fireBulletNum].speed = 10
+                
+        elif self.lastKey == "a":
+            self.imageMaster = self.leftImages[f"leftShoot{self.index}"]
+            time.sleep(0.01)
+            self.scene.fireBullets[self.fireBulletNum].speed = -10
+                
+        elif self.lastKey == "j":
+            self.imageMaster = self.leftImages[f"leftShoot{self.index}"]
+            time.sleep(0.01)
+            self.scene.fireBullets[self.fireBulletNum].speed = -10
+                
+        elif self.lastKey == "l":
+            self.imageMaster = self.rightImages[f"rightShoot{self.index}"]
+            time.sleep(0.01)
+            self.scene.fireBullets[self.fireBulletNum].speed = 10
+    
+        if self.index == 9:
+
+            if self.playerID == 1:
+                self.scene.fireBullets[self.scene.player1.fireBulletNum].shoot()
+                self.scene.player1.fireBulletNum += 1
+            
+            if self.playerID == 2:
+                self.scene.fireBullets[self.scene.player2.fireBulletNum].shoot()
+                self.scene.player2.fireBulletNum += 1
+
+            self.scene.fire = True
+            self.canMove = True
+            self.hitMotion = False
+            self.index = 0
+            self.scene.P1collisionTimes = 0
+            self.scene.P2collisionTimes = 0
+            time.sleep(0.1)
+
+    
+#Fireball class that is the bullet for the spell being shot
+class FireBallBullet(simpleGE.SuperSprite):
+
+    def __init__(self,scene,playerID,num):
+        super().__init__(scene)
+        self.playerID = playerID
+        self.imageMaster = pygame.image.load("Talos/orb.png")
+        self.setSize(50,50)
+        self.speed = 0
+        self.damage = 5
+        self.fire = False
+        self.bulletNum = num
+        self.collisionTime = 0
+        
+        if playerID == 1:
+            self.x = self.scene.player1.x
+            self.y = self.scene.player1.y
+        
+        else:
+            self.x = self.scene.player2.x
+            self.y = self.scene.player2.y
+
+    
+    def shoot(self):
+
+        if self.playerID == 1:
+
+            if self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)) >= 105:
+                print(self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)))
+                print("yes")
+                self.x = (self.scene.player1.x) + 25
+                self.y = random.randint(300,400)
+        
+        if self.playerID == 2:
+
+            if self.scene.player2.distanceTo((self.scene.player1.x,self.scene.player1.y)) >= 105:
+
+                self.x = (self.scene.player2.x) - 25
+                self.y = random.randint(300,400)
+        
+        if self.playerID == 1:
+
+            if self.scene.player1.fireBulletNum == 100:
+                self.scene.player1.fireBulletNum = 0
+        
+        else:
+
+            if self.scene.player2.fireBulletNum == 100:
+                self.scene.player2.fireBulletNum = 0
+        
+
+    def checkEvents(self):
+        
+        if self.playerID == 1:
+            
+            if self.scene.player1:
+                    
+                if self.scene.fireBulletsHB[self.bulletNum].collidesWith(self.scene.player2HB[0]):
+                        
+                    self.collisionTime += 1
+
+                    if self.scene.player2.block == False:
+
+                        if self.collisionTime == 1:
+                            self.scene.player1.hitSound.play()
+                            self.scene.player2.health -= self.scene.player1.maxDamage
+                            self.scene.player2.ratio = self.scene.player2.health / 100
+                            self.scene.player2HealthBar.updateLabel(self.scene.player2)
+                            self.setSpeed(0)
+                            self.hide()
+                            self.collisionTime = 0
+                            
+                    else:
+                        self.hide()
+                        self.scene.player2.blockSound.play()
+                    
+        if self.playerID == 2:
+   
+            if self.scene.fireBulletsHB[self.bulletNum].collidesWith(self.scene.player1HB[0]):
+
+                self.collisionTime += 1
+
+                if self.scene.player1.block == False:
+
+                    if self.collisionTime == 1:
+                        self.scene.player2.hitSound.play()
+                        self.scene.player1.health -= self.scene.player2.maxDamage
+                        self.scene.player1.ratio = self.scene.player1.health / 100
+                        self.scene.player1HealthBar.updateLabel(self.scene.player1)
+                        self.setSpeed(0)
+                        self.hide()
+                        self.collisionTime = 0
+                
+                else:
+                    self.hide()
+                    self.scene.player1.blockSound.play()
+
+        
+
+    
+    
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 #Main function that starts the game
@@ -935,7 +1219,7 @@ def main(player1,player2):
 if __name__ == "__main__":
 
     #Variables for testing purposes
-    test1 = "minotaur"
+    test1 = "talos"
     test2 = "knight"
 
     main(test1,test2)
