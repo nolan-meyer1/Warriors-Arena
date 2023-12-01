@@ -163,8 +163,7 @@ class Game(simpleGE.Scene):
         self.playAgainSCButton = simpleGE.Button()
         self.playAgainSCButton.fgColor = (0,0,0)
         self.playAgainSCButton.bgColor = (225,225,0)
-        self.playAgainSCButton.text = "Restart With Same Characters"
-        self.playAgainSCButton.size = (300,30)
+        self.playAgainSCButton.text = "Restart"
         self.playAgainSCButton.hide()
 
         #Quit button
@@ -979,6 +978,7 @@ class Talos(Knight):
         self.canMove = False
         self.imageNum = 2
         self.lastKey = ""
+        self.chokeTimes = 0
         self.index = 0
         self.sound = simpleGE.Sound("Talos/shootSound.wav")
         self.blockSound = simpleGE.Sound("Talos/blockSound.wav")
@@ -987,11 +987,14 @@ class Talos(Knight):
         self.jumpMotion = False
         self.block = False
         self.kickBackMotion = False
+        self.chokeMotion = False
         self.maxDamage = 5
         self.armor = 3
         self.health = 100
         self.ratio = self.health / 100
         self.fireBulletNum = 0
+        self.specialTimes = 1
+        self.forceAdded = False
 
         self.rightImages = {
             "right1": pygame.image.load("Talos/talos_rightWalk1.png"),
@@ -1013,6 +1016,7 @@ class Talos(Knight):
             "rightShoot8": pygame.image.load("Talos/talos_rightShoot8.png"),
             "rightShoot9": pygame.image.load("Talos/talos_rightShoot9.png"),
             "rightBlock": pygame.image.load("Talos/talos_rightBlock.png"),
+            "rightSpecial": pygame.image.load("Talos/talos_rightSpecial.png")
         }
 
         self.leftImages = {
@@ -1034,7 +1038,8 @@ class Talos(Knight):
             "leftShoot7":pygame.image.load("Talos/talos_leftShoot7.png"),
             "leftShoot8":pygame.image.load("Talos/talos_leftShoot8.png"),
             "leftShoot9":pygame.image.load("Talos/talos_leftShoot9.png"),
-            "leftBlock": pygame.image.load("Talos/talos_leftBlock.png")
+            "leftBlock": pygame.image.load("Talos/talos_leftBlock.png"),
+            "leftSpecial": pygame.image.load("Talos/talos_leftSpecial.png")
         }
 
         for name,image in self.rightImages.items():
@@ -1057,6 +1062,194 @@ class Talos(Knight):
             self.lastKey = "j"
             self.x = 590
             self.y = 400
+    
+    #Overwritten check events method to add a custom ability
+    def checkEvents(self):
+
+        if self.canMove == True:
+
+            if self.playerID == 1:
+                self.block = False
+
+                if self.lastKey == "d":
+                    self.imageMaster = self.rightImages["right1"]
+                
+                elif self.lastKey == "a":
+                    self.imageMaster = self.leftImages["left1"]
+                
+                else:
+                    self.imageMaster = self.rightImages["right1"]
+                
+                
+                if self.scene.isKeyPressed(pygame.K_d):
+                    
+                    self.x += 5
+                    self.imageMaster = self.rightImages[f"right{self.imageNum}"]
+                    self.imageNum += 1
+                    self.lastKey = "d"
+            
+                    if self.imageNum == 9:
+                        self.imageNum = 2
+                
+                if self.scene.isKeyPressed(pygame.K_a):
+                    
+                    self.x -= 5
+                    self.imageMaster = self.leftImages[f"left{self.imageNum}"]
+                    self.imageNum += 1
+                    self.lastKey = "a"
+
+                    if self.imageNum == 9:
+                        self.imageNum = 2
+                
+                if self.scene.isKeyPressed(pygame.K_w):
+                    
+                    if self.hitMotion == False:
+                        self.hitMotion = True
+                        self.sound.play()
+                
+                if self.scene.isKeyPressed(pygame.K_s):
+                    
+                    if self.jumpMotion == False:
+                        self.jumpMotion = True
+                        self.addForce(4,90)
+                        self.y += 10
+                
+                if self.scene.isKeyPressed(pygame.K_q):
+                    
+                    if not(self.scene.isKeyPressed(pygame.K_d) or (self.scene.isKeyPressed(pygame.K_a))):
+                        self.block = True
+
+                        if self.lastKey == "d":
+                            self.imageMaster = self.rightImages["rightBlock"]
+                
+                        if self.lastKey == "a":
+                            self.imageMaster = self.leftImages["leftBlock"]
+                
+                if self.scene.isKeyPressed(pygame.K_e):
+
+                    if not(self.scene.isKeyPressed(pygame.K_d) or (self.scene.isKeyPressed(pygame.K_a))):
+
+                        self.chokeMotion = True
+
+                        if self.lastKey == "d":
+                            self.imageMaster = self.rightImages["rightSpecial"]
+                        
+                        if self.lastKey == "a":
+                            self.imageMaster = self.leftImages["leftSpecial"]
+                
+    
+            #Controlls if it is player 2:
+            if self.playerID == 2:
+                self.block = False
+                if self.lastKey == "l":
+                    self.imageMaster = self.rightImages["right1"]
+                
+                elif self.lastKey == "j":
+                    self.imageMaster = self.leftImages["left1"]
+                
+                else:
+                    self.imageMaster = self.leftImages["left1"]
+                
+                if self.scene.isKeyPressed(pygame.K_l):
+                    
+                    self.x += 5
+                    self.imageMaster = self.rightImages[f"right{self.imageNum}"]
+                    self.imageNum += 1
+                    self.lastKey = "l"
+            
+                    if self.imageNum == 9:
+                        self.imageNum = 1
+                
+                if self.scene.isKeyPressed(pygame.K_j):
+                    
+                    self.x -= 5
+                    self.imageMaster = self.leftImages[f"left{self.imageNum}"]
+                    self.imageNum += 1
+                    self.lastKey = "j"
+
+                    if self.imageNum == 9:
+                        self.imageNum = 1
+                
+                if self.scene.isKeyPressed(pygame.K_i):
+                    
+                    if self.hitMotion == False:
+                        self.hitMotion = True
+                        self.sound.play()
+                
+                if self.scene.isKeyPressed(pygame.K_k):
+                
+                    if self.jumpMotion == False:
+                        self.jumpMotion = True
+                        self.addForce(4,90)
+                        self.y += 10
+                
+                if self.scene.isKeyPressed(pygame.K_o):
+                    
+                    if not(self.scene.isKeyPressed(pygame.K_j) or (self.scene.isKeyPressed(pygame.K_l))):
+                        self.block = True
+                        
+                        if self.lastKey == "l":
+                            self.imageMaster = self.rightImages["rightBlock"]
+                    
+                        if self.lastKey == "j":
+                            self.imageMaster = self.leftImages["leftBlock"] 
+                
+                if self.scene.isKeyPressed(pygame.K_u):
+
+                    if not(self.scene.isKeyPressed(pygame.K_j) or (self.scene.isKeyPressed(pygame.K_k))):
+
+                        self.chokeMotion = True
+
+                        print(self.chokeTimes)
+
+                        if self.lastKey == "j":
+                            self.imageMaster = self.leftImages["leftSpecial"]
+                        
+                        if self.lastKey == "l":
+                            self.imageMaster = self.rightImages["rightSpecial"]
+                
+        #Checks states of character
+
+        #Hit state
+        if self.hitMotion == True:
+            self.hit()
+            
+        #Jump State
+        if self.jumpMotion == True:
+            self.jump()
+        
+        #Check's kicknotion state
+        if self.kickBackMotion == True:
+            
+            if self.y < 350:
+                self.setDY(0)
+                self.addForce(3,270)
+            
+            if self.y > 400:
+                self.y = 400
+                self.kickBackMotion = False
+                self.canMove = True
+                self.setDY(0)
+                self.setDX(0)
+                self.scene.kapow.hide()
+                
+                if self.lastKey == "d":
+                    self.rotateBy(-90)
+            
+                if self.lastKey == "a":
+                    self.rotateBy(-270)
+            
+                if self.lastKey == "j":
+                    self.rotateBy(-270)
+            
+                if self.lastKey == "l":
+                    self.rotateBy(-90)
+    
+        #Choke state
+        if self.chokeMotion == True:
+
+            self.choke()
+
     
     #Hit method
     def hit(self):
@@ -1101,6 +1294,106 @@ class Talos(Knight):
             self.scene.P1collisionTimes = 0
             self.scene.P2collisionTimes = 0
             time.sleep(0.1)
+    
+    
+    #Choke method that allows you to pick up a character and bring him to a certain height.
+    def choke(self):
+    
+        if self.playerID == 1:
+
+            if self.specialTimes < 4:
+            
+                if self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)) <= 215:
+                    self.canMove = False
+                    self.chokeTimes += 1
+
+                    if self.chokeTimes == 1:
+
+                        self.scene.player2.addForce(4,90)
+                        self.scene.player2.canMove = False
+                        self.forceAdded = True
+
+                elif not(self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)) <= 215) and (self.forceAdded == False):
+                    self.chokeMotion = False
+                
+
+                if self.scene.player2.y < 200:
+
+                    if self.scene.player1.lastKey == "d":
+                        self.scene.player2.setDY(0)
+                        self.scene.player2.addForce(6,325)
+                        print("yes")
+                    
+                    else:
+                        self.scene.player2.addForce(6,225)
+                    #self.scene.player1.hitSound.play()
+                    #Look for sound effects
+                    self.scene.player2.health -= self.scene.player1.maxDamage
+                    self.scene.player2.ratio = self.scene.player2.health / 100
+                    self.scene.player2HealthBar.updateLabel(self.scene.player2)
+
+                if self.scene.player2.y > 400:
+                    self.canMove = True
+                    self.scene.player2.y = 400
+                    self.scene.player2.canMove = True
+                    self.chokeMotion = False
+                    self.scene.player2.setDY(0)
+                    self.scene.player2.setDX(0)
+                    self.chokeTimes = 0
+                    self.specialTimes += 1
+                    self.forceAdded = False
+    
+
+        if self.playerID == 2:
+
+            if self.specialTimes < 4:
+                
+                if self.scene.player2.distanceTo((self.scene.player1.x,self.scene.player1.y)) <= 215:
+                    self.canMove = False
+                    self.chokeTimes += 1
+
+                    if self.chokeTimes == 1:
+
+                        self.scene.player1.addForce(4,90)
+                        self.scene.player1.canMove = False
+                        self.forceAdded = True
+                            
+
+                elif not(self.scene.player2.distanceTo((self.scene.player1.x,self.scene.player1.y)) <= 215) and (self.forceAdded == False):
+                    self.chokeMotion = False
+                    
+
+                if self.scene.player1.y < 200:
+
+                    if self.scene.player2.lastKey == "j":
+                        self.scene.player1.setDY(0)
+                        self.scene.player1.addForce(6,225)
+                        
+                    else:
+                        self.scene.player1.addForce(6,325)
+
+                    #self.scene.player1.hitSound.play()
+                    #Look for sound effects
+                    self.scene.player1.health -= self.scene.player2.maxDamage
+                    self.scene.player1.ratio = self.scene.player1.health / 100
+                    self.scene.player1HealthBar.updateLabel(self.scene.player1)
+
+                if self.scene.player1.y > 400:
+                    self.canMove = True
+                    self.scene.player1.y = 400
+                    self.scene.player1.canMove = True
+                    self.chokeMotion = False
+                    self.scene.player1.setDY(0)
+                    self.scene.player1.setDX(0)
+                    self.chokeTimes = 0
+                    self.specialTimes += 1
+                    self.forceAdded = False
+                    
+        
+        
+
+
+
 
     
 #Fireball class that is the bullet for the spell being shot
@@ -1125,14 +1418,12 @@ class FireBallBullet(simpleGE.SuperSprite):
             self.x = self.scene.player2.x
             self.y = self.scene.player2.y
 
-    
+    #Repositions the fireball to the screen if they are greater thatn 105 pixels away and sets the speed based off what direction they're facing
     def shoot(self):
 
         if self.playerID == 1:
 
             if self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)) >= 105:
-                print(self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)))
-                print("yes")
                 self.x = (self.scene.player1.x) + 25
                 self.y = random.randint(300,400)
         
@@ -1153,7 +1444,7 @@ class FireBallBullet(simpleGE.SuperSprite):
             if self.scene.player2.fireBulletNum == 100:
                 self.scene.player2.fireBulletNum = 0
         
-
+    #Checks for the collision
     def checkEvents(self):
         
         if self.playerID == 1:
@@ -1198,12 +1489,7 @@ class FireBallBullet(simpleGE.SuperSprite):
                 
                 else:
                     self.hide()
-                    self.scene.player1.blockSound.play()
-
-        
-
-    
-    
+                    self.scene.player1.blockSound.play() 
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -1219,7 +1505,7 @@ def main(player1,player2):
 if __name__ == "__main__":
 
     #Variables for testing purposes
-    test1 = "talos"
-    test2 = "knight"
+    test1 = "knight"
+    test2 = "talos"
 
     main(test1,test2)
