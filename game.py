@@ -17,6 +17,7 @@ Selection Sound Effect : Sound Effect from <a href="https://pixabay.com/?utm_sou
 FireBall: https://www.freeiconspng.com/img/46732
 Talos Shoot Sound: https://opengameart.org/content/fire-evil-spell
 Talos Hit Sound: Sound Effect from <a href="https://pixabay.com/?utm_source=link-attribution&utm_medium=referral&utm_campaign=music&utm_content=7017">Pixabay</a>
+Force Sound Effects: https://www.youtube.com/watch?v=9RILOoq7gqY
 Player 1 and 2 Wins: Image created by me
 Character Headshots: Image created by me
 Minotaur Authors: Authors: bluecarrot16, Benjamin K. Smith (BenCreating), Evert, Eliza Wyatt (ElizaWy), TheraHedwig, MuffinElZangano, Durrani, Johannes Sj?lund (wulax), Stephen Challener (Redshrike), Nila122, Daniel Eddeland (daneeklu), David Conway Jr. (JaidynReiman), Johannes Sjölund (wulax), Matthew Krohn (makrohn), Joe White, Pierre Vigier and DCSS artists (see https://github.com/crawl/tiles/blob/master/ARTISTS.md)
@@ -983,6 +984,8 @@ class Talos(Knight):
         self.sound = simpleGE.Sound("Talos/shootSound.wav")
         self.blockSound = simpleGE.Sound("Talos/blockSound.wav")
         self.hitSound = simpleGE.Sound("Talos/fire.wav")
+        self.chokeSound = simpleGE.Sound("Talos/forceChoke.wav")
+        self.pushSound = simpleGE.Sound("Talos/forcePush.wav")
         self.hitMotion = False
         self.jumpMotion = False
         self.block = False
@@ -1200,8 +1203,6 @@ class Talos(Knight):
 
                         self.chokeMotion = True
 
-                        print(self.chokeTimes)
-
                         if self.lastKey == "j":
                             self.imageMaster = self.leftImages["leftSpecial"]
                         
@@ -1295,7 +1296,7 @@ class Talos(Knight):
             self.scene.P2collisionTimes = 0
             time.sleep(0.1)
     
-    
+
     #Choke method that allows you to pick up a character and bring him to a certain height.
     def choke(self):
     
@@ -1308,7 +1309,7 @@ class Talos(Knight):
                     self.chokeTimes += 1
 
                     if self.chokeTimes == 1:
-
+                        self.chokeSound.play()
                         self.scene.player2.addForce(4,90)
                         self.scene.player2.canMove = False
                         self.forceAdded = True
@@ -1320,14 +1321,14 @@ class Talos(Knight):
                 if self.scene.player2.y < 200:
 
                     if self.scene.player1.lastKey == "d":
-                        self.scene.player2.setDY(0)
+                        self.pushSound.play()
                         self.scene.player2.addForce(6,325)
-                        print("yes")
                     
                     else:
+                        self.pushSound.play()
                         self.scene.player2.addForce(6,225)
-                    #self.scene.player1.hitSound.play()
-                    #Look for sound effects
+
+
                     self.scene.player2.health -= self.scene.player1.maxDamage
                     self.scene.player2.ratio = self.scene.player2.health / 100
                     self.scene.player2HealthBar.updateLabel(self.scene.player2)
@@ -1353,7 +1354,7 @@ class Talos(Knight):
                     self.chokeTimes += 1
 
                     if self.chokeTimes == 1:
-
+                        self.chokeSound.play()
                         self.scene.player1.addForce(4,90)
                         self.scene.player1.canMove = False
                         self.forceAdded = True
@@ -1366,14 +1367,14 @@ class Talos(Knight):
                 if self.scene.player1.y < 200:
 
                     if self.scene.player2.lastKey == "j":
-                        self.scene.player1.setDY(0)
+                        self.pushSound.play()
                         self.scene.player1.addForce(6,225)
                         
                     else:
+                        self.pushSound.play()
                         self.scene.player1.addForce(6,325)
-
-                    #self.scene.player1.hitSound.play()
-                    #Look for sound effects
+                        
+                    
                     self.scene.player1.health -= self.scene.player2.maxDamage
                     self.scene.player1.ratio = self.scene.player1.health / 100
                     self.scene.player1HealthBar.updateLabel(self.scene.player1)
