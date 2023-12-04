@@ -1,9 +1,8 @@
-import simpleGE,random,pygame,time,userInterface
+import simpleGE,random,pygame,time
 """
 An arcade style fighting game.
 
 Background: https://www.vecteezy.com/photo/26844400-2d-hero-battle-pvp-arena-background-casual-game-art-design-ai-generative
-Health Bar: https://opengameart.org/content/long-red-health-bar
 Sword Swinging Sounds: https://opengameart.org/content/rpg-sound-pack
 Characters Generated through: https://sanderfrenken.github.io/Universal-LPC-Spritesheet-Character-Generator/#?body=Body_color_light&head=Human_male_light
 Loading Screen sound: By Grand_Project from Pixbay
@@ -214,7 +213,8 @@ class Game(simpleGE.Scene):
         pygame.mixer.music.load("UI/fightSong.ogg")
         pygame.mixer.music.set_volume(.3)
         pygame.mixer.music.play(-1)
-        
+
+        #This variable will be used to see how many times the loop is run. When it is equal to two it will start the countdown sequence.
         self.runTimes = 0
 
         #Puts everything on the screen
@@ -231,6 +231,7 @@ class Game(simpleGE.Scene):
 
         self.checkCollision()
         self.countdown()
+
         if self.playAgainSCButton.clicked:
 
             self.reset()
@@ -243,6 +244,7 @@ class Game(simpleGE.Scene):
     #Method to check for collisions. This is the combat system
     def checkCollision(self):
 
+        #Checks for player1 collision with player2
         if self.player1HB[1].collidesWith(self.player2HB[0]):
 
             if self.player1.hitMotion == True:
@@ -261,7 +263,7 @@ class Game(simpleGE.Scene):
                         if self.P1hitTimes == self.P1comboTimes:
 
                             self.player2.canMove = True
-                            self.P2hitTimes = 0 
+                            self.P1hitTimes = 0 
                             self.P1comboTimes = random.randint(5,20)
                             self.kapow.show()
                             self.kapow.x = self.player1.x
@@ -271,7 +273,8 @@ class Game(simpleGE.Scene):
                     
                     else:
                         self.player2.blockSound.play()
-                
+
+        #Checks for player2 collision with player1       
         if self.player2HB[1].collidesWith(self.player1HB[0]):
 
             if self.player2.hitMotion == True:
@@ -300,7 +303,7 @@ class Game(simpleGE.Scene):
                     else:
                         self.player1.blockSound.play()
                 
-                
+        #Checks player1's health        
         if self.player1.health <= 0:
             self.playTimes += 1
             self.player1.canMove = False
@@ -318,7 +321,7 @@ class Game(simpleGE.Scene):
                 time.sleep(1)
                 self.youWinSound.play()
 
-
+        #Checks player2 health
         if self.player2.health <= 0:
             self.playTimes += 1
             self.player1.canMove = False
@@ -359,6 +362,9 @@ class Game(simpleGE.Scene):
         self.player1.imageMaster = self.player1.rightImages["right1"]
         self.player2.imageMaster = self.player2.leftImages["left1"]
         pygame.mixer.music.play()
+
+        self.player1.specialTimes = 1
+        self.player2.specialTimes = 1
     
     #Countdown sequence
     def countdown(self):
@@ -414,7 +420,7 @@ class HealthBar(simpleGE.SuperSprite):
         else:
             self.setPosition((518,25))
 
-    #Work on update of the healthbars. Below is the idea update.
+    #Updates the label
     def updateLabel(self,player):
 
         try:
@@ -451,7 +457,7 @@ class HealthBar(simpleGE.SuperSprite):
             self.P2interval = 518
             
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-#Creates hitboxes that will be attatched to the character's and move with the characters
+#Creates hitboxes that will be attatched to the character's and move with the characters. Created based off what type of hitbox is needed(information passed in).
 class Hitbox(simpleGE.SuperSprite):
 
     def __init__(self,scene,character,type,num=0):
@@ -501,7 +507,7 @@ class Hitbox(simpleGE.SuperSprite):
             self.setBoundAction(self.HIDE)
 
 
-    
+    #This will be how the hitbox tracks based off what type of hitbox it is. 
     def checkEvents(self):
 
         if self.type == "head":
@@ -627,7 +633,7 @@ class Knight(simpleGE.SuperSprite):
             self.x = 590
             self.y = 400
         
-
+    #Looks at keys and moves the character and does it's abilities
     def checkEvents(self):
 
         if self.canMove == True:
@@ -889,7 +895,7 @@ class Knight(simpleGE.SuperSprite):
             self.x = 50
 
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-#Minotaur Class. Inherits from the knight class. Changes Images and has two more health than the knight class.
+#Minotaur Class. Inherits from the knight class. Changes Images and has one more damage then the knight class.
 class Minotaur(Knight):
 
     def __init__(self,scene,playerID):
@@ -970,7 +976,7 @@ class Minotaur(Knight):
             self.x = 590
             self.y = 400
 #-----------------------------------------------------------------------------------------------------------------------------------------------------
-#Talos Class
+#Talos Class. This also inehrits the night class. However it has a special ability that will allow you to "force choke". 
 class Talos(Knight):
 
     def __init__(self,scene,playerID):
@@ -1390,11 +1396,6 @@ class Talos(Knight):
                     self.specialTimes += 1
                     self.forceAdded = False
                     
-        
-        
-
-
-
 
     
 #Fireball class that is the bullet for the spell being shot
@@ -1507,6 +1508,6 @@ if __name__ == "__main__":
 
     #Variables for testing purposes
     test1 = "knight"
-    test2 = "talos"
+    test2 = "minotaur"
 
     main(test1,test2)

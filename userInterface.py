@@ -73,7 +73,7 @@ class UserInterface(simpleGE.Scene):
         #P1 control label
         self.P1control = simpleGE.MultiLabel()
         self.P1control.textLines = ["Player 1 Controls: Hit- W KEY Block- Q KEY Left Walk- A KEY", 
-                                    "Right Walk- D KEY, Jump- S KEY"]
+                                    "Right Walk- D KEY, Jump- S KEY, Special- E"]
         self.P1control.size = (600,80)
         self.P1control.bgColor = ("orange")
         self.P1control.hide()
@@ -81,7 +81,7 @@ class UserInterface(simpleGE.Scene):
         #P2 control label
         self.P2control = simpleGE.MultiLabel()
         self.P2control.textLines = ["Player 2 Controls: Hit- I KEY Block- O KEY Left Walk- J KEY", 
-                                    "Right Walk- L KEY, Jump- K KEY"]
+                                    "Right Walk- L KEY, Jump- K KEY, Special- U"]
         self.P2control.size = (600,80)
         self.P2control.bgColor = ("orange")
         self.P2control.hide()
@@ -152,8 +152,8 @@ class HotSpot(simpleGE.BasicSprite):
         self.character = character
         
     def checkEvents(self):
+
         #check for clicked and active                
-        
         self.clicked = False
 
         #check for mouse input
@@ -239,8 +239,12 @@ def main():
     player1 = UI.player1
     player2 = UI.player2
 
-    gameplay = game.Game(player1,player2)
-    gameplay.start()
+    try:
+        gameplay = game.Game(player1,player2)
+        gameplay.start()
+    
+    except:
+        pass
 
 
 #Calls the main function
