@@ -72,7 +72,7 @@ class UserInterface(simpleGE.Scene):
 
         #P1 control label
         self.P1control = simpleGE.MultiLabel()
-        self.P1control.textLines = ["Player 1 Controls: Hit- W KEY Block- Q KEY Left Walk- A KEY", 
+        self.P1control.textLines = ["Player 1 Controls: Hit- W KEY, Block- Q KEY, Left Walk- A KEY", 
                                     "Right Walk- D KEY, Jump- S KEY, Special- E"]
         self.P1control.size = (600,80)
         self.P1control.bgColor = ("orange")
@@ -80,7 +80,7 @@ class UserInterface(simpleGE.Scene):
 
         #P2 control label
         self.P2control = simpleGE.MultiLabel()
-        self.P2control.textLines = ["Player 2 Controls: Hit- I KEY Block- O KEY Left Walk- J KEY", 
+        self.P2control.textLines = ["Player 2 Controls: Hit- I KEY, Block- O KEY, Left Walk- J KEY", 
                                     "Right Walk- L KEY, Jump- K KEY, Special- U"]
         self.P2control.size = (600,80)
         self.P2control.bgColor = ("orange")
