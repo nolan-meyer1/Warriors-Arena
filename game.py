@@ -1315,6 +1315,12 @@ class Talos(Knight):
                     self.chokeTimes += 1
 
                     if self.chokeTimes == 1:
+
+                        if self.scene.player2.jumpMotion == True:
+                            self.scene.player2.jumpMotion = False
+                            self.scene.player2.setDX(0)
+                            self.scene.player2.setDY(0)
+
                         self.chokeSound.play()
                         self.scene.player2.addForce(4,90)
                         self.scene.player2.canMove = False
@@ -1360,6 +1366,12 @@ class Talos(Knight):
                     self.chokeTimes += 1
 
                     if self.chokeTimes == 1:
+
+                        if self.scene.player1.jumpMotion == True:
+                            self.scene.player1.jumpMotion = False
+                            self.scene.player1.setDX(0)
+                            self.scene.player1.setDY(0)
+
                         self.chokeSound.play()
                         self.scene.player1.addForce(4,90)
                         self.scene.player1.canMove = False
@@ -1507,7 +1519,7 @@ def main(player1,player2):
 if __name__ == "__main__":
 
     #Variables for testing purposes
-    test1 = "knight"
-    test2 = "minotaur"
+    test1 = "talos"
+    test2 = "knight"
 
     main(test1,test2)
