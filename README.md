@@ -2,7 +2,7 @@
 
 Final Project Created for CS 120
 
-My goals for this project was to make a very simple combat game where you could face off againts a player that you will play with on the same computer. The first player that health gets to zero loses. Each character has the ability to move right,left,jump,hit,and block. The "Talos" character also has one special move. 
+My goals for this project was to make a very simple combat game where you could face off againts a player that you will play with on the same computer. The first player that health gets to zero loses. Each character has the ability to move right,left,jump,hit,and block. The "Talos" character also has one special move. Special moves can only be used three times per round. 
 
 Instructions:
 To start the game you will want to run userInterface.py. This will run the start screen. If you just run game.py the game will still run but you won't be able to pick the characters that you want. It will only be running the test code. 
