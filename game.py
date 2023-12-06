@@ -787,6 +787,8 @@ class Knight(simpleGE.SuperSprite):
             
                 if self.lastKey == "l":
                     self.rotateBy(-90)
+                
+                
     
     #Hit method
     def hit(self):
@@ -1311,8 +1313,13 @@ class Talos(Knight):
             if self.specialTimes < 4:
             
                 if self.scene.player1.distanceTo((self.scene.player2.x,self.scene.player2.y)) <= 215:
-                    self.canMove = False
-                    self.chokeTimes += 1
+            
+                    if (self.scene.player2.rotation == 0):
+                        self.canMove = False
+                        self.chokeTimes += 1
+                    
+                    else:
+                        self.chokeMotion = False
 
                     if self.chokeTimes == 1:
 
@@ -1346,24 +1353,30 @@ class Talos(Knight):
                     self.scene.player2HealthBar.updateLabel(self.scene.player2)
 
                 if self.scene.player2.y > 400:
-                    self.canMove = True
-                    self.scene.player2.y = 400
-                    self.scene.player2.canMove = True
-                    self.chokeMotion = False
-                    self.scene.player2.setDY(0)
-                    self.scene.player2.setDX(0)
-                    self.chokeTimes = 0
-                    self.specialTimes += 1
-                    self.forceAdded = False
+                    
+                    if self.scene.player2.kickBackMotion == False:
+                        self.canMove = True
+                        self.scene.player2.y = 400
+                        self.scene.player2.canMove = True
+                        self.chokeMotion = False
+                        self.scene.player2.setDY(0)
+                        self.scene.player2.setDX(0)
+                        self.chokeTimes = 0
+                        self.specialTimes += 1
+                        self.forceAdded = False
     
-
         if self.playerID == 2:
 
             if self.specialTimes < 4:
                 
                 if self.scene.player2.distanceTo((self.scene.player1.x,self.scene.player1.y)) <= 215:
-                    self.canMove = False
-                    self.chokeTimes += 1
+
+                    if self.scene.player1.kickBackMotion == False:
+                        self.canMove = False
+                        self.chokeTimes += 1
+                    
+                    else:
+                        self.chokeMotion = False
 
                     if self.chokeTimes == 1:
 
@@ -1398,15 +1411,17 @@ class Talos(Knight):
                     self.scene.player1HealthBar.updateLabel(self.scene.player1)
 
                 if self.scene.player1.y > 400:
-                    self.canMove = True
-                    self.scene.player1.y = 400
-                    self.scene.player1.canMove = True
-                    self.chokeMotion = False
-                    self.scene.player1.setDY(0)
-                    self.scene.player1.setDX(0)
-                    self.chokeTimes = 0
-                    self.specialTimes += 1
-                    self.forceAdded = False
+
+                    if self.scene.player1.kickBackMotion == False:
+                        self.canMove = True
+                        self.scene.player1.y = 400
+                        self.scene.player1.canMove = True
+                        self.chokeMotion = False
+                        self.scene.player1.setDY(0)
+                        self.scene.player1.setDX(0)
+                        self.chokeTimes = 0
+                        self.specialTimes += 1
+                        self.forceAdded = False
                     
 
     
@@ -1519,7 +1534,7 @@ def main(player1,player2):
 if __name__ == "__main__":
 
     #Variables for testing purposes
-    test1 = "talos"
-    test2 = "knight"
+    test1 = "knight"
+    test2 = "talos"
 
     main(test1,test2)
