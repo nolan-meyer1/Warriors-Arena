@@ -22,20 +22,11 @@ This ended up being a very big project that took me a lot of time to complete. T
 
 Game Images: 
 
-Start Screen:
 <img width="635" alt="Screenshot 2024-02-07 at 6 35 38 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/8956b67d-d2ae-4f53-8ceb-7e69463fb6f4">
 
-
-
-Charater Select screen:
 <img width="636" alt="Screenshot 2024-02-07 at 6 36 01 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/3177b5b4-cc6b-4ee8-abd1-62fa40dada1e">
 
-
-
-Gameplay screen:
 <img width="638" alt="Screenshot 2024-02-07 at 6 36 19 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/fa7e3d1d-b928-4fbc-8c32-39b47430362b">
-
-
 
 
 Citations(Also included in Source Code of game.py):
