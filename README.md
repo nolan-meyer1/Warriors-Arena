@@ -28,10 +28,6 @@ Game Images:
 
 <img width="638" alt="Screenshot 2024-02-07 at 6 36 19 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/fa7e3d1d-b928-4fbc-8c32-39b47430362b">
 
-
-
-
-
 Citations(Also included in Source Code of game.py):
 
 Background: https://www.vecteezy.com/photo/26844400-2d-hero-battle-pvp-arena-background-casual-game-art-design-ai-generative
