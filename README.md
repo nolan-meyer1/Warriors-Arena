@@ -20,7 +20,7 @@ My process:
 
 This ended up being a very big project that took me a lot of time to complete. The only way that I was able to stay on track was by having a very detailed progress tracker. In my formal game design document, I had written things that I had to have completed by the end of each day. I ended up working ahead which was really helpful when I got stuck on a few problems. One problem that I got stuck on was the hitbox. Making a hitbox that followed the character's animations proved to be challenging. I spent a lot of time getting a good enough version to be functional. Overall, I am happy with how this project turned out, but there are a few things I would like to improve. One is that it is pretty laggy when the characters are fighting, and the minotaur character's animations are a little messed up. I would also like to figure out a way to work out some of the bugs with my sound effects. In certain instances with multiple sound effects playing sometimes one will not play. Other than those few things, I am happy with how this project turned out, and I don't really think I would have done anything differently if I had to do this project again. When it comes to how close I stayed to my actual design document I would say that I pretty much followed it to a T. I got everything I had planned done. I even had time to complete a majority of my stretch goals as well. In the end, I feel like this was a very challenging project that pushed my skills as a programmer, but I am extremely happy with the results.
 
-Game Images: 
+### Game Images 
 
 <img width="635" alt="Screenshot 2024-02-07 at 6 35 38 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/8956b67d-d2ae-4f53-8ceb-7e69463fb6f4">
 
@@ -28,7 +28,7 @@ Game Images:
 
 <img width="638" alt="Screenshot 2024-02-07 at 6 36 19 PM" src="https://github.com/nolan-meyer1/Warriors-Arena/assets/145584308/fa7e3d1d-b928-4fbc-8c32-39b47430362b">
 
-Citations(Also included in Source Code of game.py):
+### Citations(Also included in Source Code of game.py)
 
 Background: https://www.vecteezy.com/photo/26844400-2d-hero-battle-pvp-arena-background-casual-game-art-design-ai-generative
 
