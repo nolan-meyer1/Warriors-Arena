@@ -29,6 +29,7 @@ This ended up being a very big project that took me a lot of time to complete. T
 |I2|[Minotaur](https://github.com/nolan-meyer1/Warriors-Arena/tree/main/Minotaur)|Contains all the minotaur's images|
 |I3|[Talos](https://github.com/nolan-meyer1/Warriors-Arena/tree/main/Talos)|Contains all of Talo's images|
 |I4|[User Interface](https://github.com/nolan-meyer1/Warriors-Arena/tree/main/UI)|Contains all of the User Interface Images|
+|GE1|[Game Engine](https://github.com/nolan-meyer1/Warriors-Arena/blob/main/simpleGE.py)|Game engine used for this project|
 
 G: Game files, I: Image files, GE: Game Engine
 
