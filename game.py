@@ -228,6 +228,11 @@ class Game(simpleGE.Scene):
 
     #Update method controls the game
     def update(self):
+        """
+        Checks for collision, runs a countdown, 
+        checks if the play again button has been clicked,
+        and lastly checks if the quitButton has been clicked.
+        """
 
         self.checkCollision()
         self.countdown()
@@ -243,6 +248,11 @@ class Game(simpleGE.Scene):
     
     #Method to check for collisions. This is the combat system
     def checkCollision(self):
+        """
+        Checks if the player's hitboxes collide and checks for a combo. 
+        Updates the health bars as well, and checks if any of the character's
+        health is at zero. 
+        """
 
         #Checks for player1 collision with player2
         if self.player1HB[1].collidesWith(self.player2HB[0]):
@@ -341,6 +351,9 @@ class Game(simpleGE.Scene):
         
     #Resets everything
     def reset(self):
+        """
+        Resets all the images and buttons. 
+        """
 
         self.player1.health = 100
         self.player2.health = 100
@@ -368,6 +381,10 @@ class Game(simpleGE.Scene):
     
     #Countdown sequence
     def countdown(self):
+        """
+        Runs a countdown sequence after giving
+        the program time to load. 
+        """
 
         self.runTimes += 1
 
@@ -422,6 +439,15 @@ class HealthBar(simpleGE.SuperSprite):
 
     #Updates the label
     def updateLabel(self,player):
+        """
+        Updates the health bar based off
+        what the player's health are. Uses
+        a ratio to accomplish this for proper
+        shrinking of the bar because it's a 
+        surface and goes around the middle so
+        when you decrease the health it will 
+        take away from both ends.
+        """
 
         try:
             self.imageMaster = pygame.Surface((200*player.ratio,30))
@@ -442,6 +468,9 @@ class HealthBar(simpleGE.SuperSprite):
     
     #Resets Label
     def reset(self,player):
+        """
+        Resets the health bars.
+        """
         player.ratio = player.health / 100
 
         self.imageMaster = pygame.Surface((200*player.ratio,30))
@@ -509,6 +538,9 @@ class Hitbox(simpleGE.SuperSprite):
 
     #This will be how the hitbox tracks based off what type of hitbox it is. 
     def checkEvents(self):
+        """
+        Checks the collsions based off what type of hitbox it is. 
+        """
 
         if self.type == "head":
 
@@ -635,6 +667,9 @@ class Knight(simpleGE.SuperSprite):
         
     #Looks at keys and moves the character and does it's abilities
     def checkEvents(self):
+        """
+        All of the character's movemenets and abilities are done here. 
+        """
 
         if self.canMove == True:
 
@@ -792,6 +827,9 @@ class Knight(simpleGE.SuperSprite):
     
     #Hit method
     def hit(self):
+        """
+        Does all of the swinging animations. 
+        """
 
         self.canMove = False
         self.index += 1
@@ -822,6 +860,9 @@ class Knight(simpleGE.SuperSprite):
     
     #Jump Method
     def jump(self):
+        """
+        Does the jumping animation
+        """
 
         self.canMove = False
 
@@ -863,6 +904,9 @@ class Knight(simpleGE.SuperSprite):
         
     #This will make the player fly back after getting combo
     def kickBack(self):
+        """
+        Does the throw back animation. 
+        """
 
         self.canMove = False
         self.kickBackMotion = True
@@ -889,6 +933,9 @@ class Knight(simpleGE.SuperSprite):
 
     #Checks the bounds of the character
     def checkBounds(self):
+        """
+        If the character goes off of the screen it moves them back
+        """
 
         if self.x > 640:
             self.x = 590
@@ -1076,6 +1123,10 @@ class Talos(Knight):
     
     #Overwritten check events method to add a custom ability
     def checkEvents(self):
+        """
+        Same movement as the knight but added an extra 
+        ability to this character.
+        """
 
         if self.canMove == True:
 
@@ -1262,6 +1313,9 @@ class Talos(Knight):
     
     #Hit method
     def hit(self):
+        """
+        Runs the hit animation
+        """
 
         self.canMove = False
         self.index += 1
@@ -1307,6 +1361,9 @@ class Talos(Knight):
 
     #Choke method that allows you to pick up a character and bring him to a certain height.
     def choke(self):
+        """
+        Runs the force choke animation. 
+        """
     
         if self.playerID == 1:
 
@@ -1449,6 +1506,9 @@ class FireBallBullet(simpleGE.SuperSprite):
 
     #Repositions the fireball to the screen if they are greater thatn 105 pixels away and sets the speed based off what direction they're facing
     def shoot(self):
+        """
+        Fires the bullet
+        """
 
         if self.playerID == 1:
 
@@ -1475,6 +1535,9 @@ class FireBallBullet(simpleGE.SuperSprite):
         
     #Checks for the collision
     def checkEvents(self):
+        """
+        Checks for collision of the bullets
+        """
         
         if self.playerID == 1:
             

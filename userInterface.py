@@ -110,6 +110,10 @@ class UserInterface(simpleGE.Scene):
 
     #Checks that both characters have selected a character and ready to fight
     def update(self):
+        """
+        Checks if the start button was clicked, and the fight button was 
+        clicked. 
+        """
 
         if self.startButton.clicked:
 
@@ -152,6 +156,10 @@ class HotSpot(simpleGE.BasicSprite):
         self.character = character
         
     def checkEvents(self):
+        """
+        Checks if the hotstop was clicked and then checks who's turn
+        it is and what type of headshot was clicked. 
+        """
 
         #check for clicked and active                
         self.clicked = False
